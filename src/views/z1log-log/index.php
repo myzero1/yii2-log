@@ -102,7 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'content' => function($row){
                     return Html::tag ('span', '查看截图',[
                         'class'=>'list_r list_crud_act',
-                        'crud-url'=>url::to(['/z1log/z1log-log/snapshoot', 'id' => $row->id]),
+                        'crud-url'=>url::to(['/myzero1/log/z1log-log/snapshoot', 'id' => $row->id]),
                         'crud-method'=>'get',
                         'crud-data'=>'',
                         'win-title'=>'查看截图',

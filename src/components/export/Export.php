@@ -1,6 +1,6 @@
 <?php
 
-namespace z1log\components\export;
+namespace myzero1\log\components\export;
 
 /**
  * Export

@@ -76,7 +76,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
     /**
      * @inheritdoc
      */
-    public $controllerNamespace = 'z1log\controllers';
+    public $controllerNamespace = 'myzero1\log\controllers';
     
     /**
      * @var array the params will merger to module
@@ -109,7 +109,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
     }
 
     private function rewriteLibs($app){
-        \Yii::$classMap['yii\db\Command'] = '@z1log/components/libs/Command.php';
+        \Yii::$classMap['yii\db\Command'] = '@myzero1/log/components/libs/Command.php';
     }
 
     private function addConfig($app){
@@ -129,9 +129,9 @@ class Module extends \yii\base\Module implements BootstrapInterface
     }
 
     private function addBehaviors($app){
-        $app->on(Controller::EVENT_BEFORE_ACTION,['\z1log\Module','z1logBeforeAction']);
-        $app->view->on(View::EVENT_BEFORE_RENDER,['\z1log\Module','z1logBeforeRender']);
-        $app->on(Application::EVENT_AFTER_REQUEST,['\z1log\Module','z1logAfterRequest']);
+        $app->on(Controller::EVENT_BEFORE_ACTION,['\myzero1\log\Module','z1logBeforeAction']);
+        $app->view->on(View::EVENT_BEFORE_RENDER,['\myzero1\log\Module','z1logBeforeRender']);
+        $app->on(Application::EVENT_AFTER_REQUEST,['\myzero1\log\Module','z1logAfterRequest']);
     }
 
     /**

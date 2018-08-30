@@ -1,10 +1,10 @@
 <?php
 
-namespace z1log\controllers;
+namespace myzero1\log\controllers;
 
 use Yii;
-use z1log\models\Z1logLog;
-use z1log\models\search\Z1logLogSearch;
+use myzero1\log\models\Z1logLog;
+use myzero1\log\models\search\Z1logLogSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

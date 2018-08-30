@@ -1,6 +1,6 @@
 <?php
 
-namespace z1log\controllers;
+namespace myzero1\log\controllers;
 
 use yii\web\Controller;
 

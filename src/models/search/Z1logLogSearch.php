@@ -1,14 +1,14 @@
 <?php
 
-namespace z1log\models\search;
+namespace myzero1\log\models\search;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use z1log\models\Z1logLog;
+use myzero1\log\models\Z1logLog;
 
 /**
- * Z1logLogSearch represents the model behind the search form of `z1log\models\Z1logLog`.
+ * Z1logLogSearch represents the model behind the search form of `myzero1\log\models\Z1logLog`.
  */
 class Z1logLogSearch extends Z1logLog
 {

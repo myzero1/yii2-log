@@ -1,6 +1,6 @@
 <?php
 
-namespace z1log\models;
+namespace myzero1\log\models;
 
 use Yii;
 
