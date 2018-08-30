@@ -1,0 +1,24 @@
+{
+    "name": "myzero1/yii2-rbacp",
+    "description": "Simple captcha for yii2.Just add the module in config file and use the widget.",
+    "type": "yii2-module",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Xuanwu Qin",
+            "email": "myzero1@sina.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "yiisoft/yii2": "~2.0",
+        "bower-asset/admin-lte": "^2.3.11",
+		"bower-asset/font-awesome": "^4.0",
+		"bower-asset/html5shiv": "^3.0",
+		"bower-asset/jquery-slimscroll": "^1.3",
+		"bower-asset/flot": "^0.8"
+    },
+    "autoload": {
+        "psr-4": { "myzero1\\rbacp\\": "src/" }
+    }
+}
