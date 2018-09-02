@@ -1,3 +1,7 @@
+<?php
+	\myzero1\adminlteiframe\gii\GiiAsset::register($this);
+?>
+
 <div id='snapshoot'>
 	<div id='snapshoot-mask'></div>
 <?php

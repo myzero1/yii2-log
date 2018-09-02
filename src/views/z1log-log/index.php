@@ -163,7 +163,7 @@ $this->title = '日志管理';
                     'view' => function ($url, $model, $key) {
                         $options = array_merge([
                             'class'=>'btn btn-primary btn-xs use-layer',
-                            'layer-config' => sprintf('{type:2,title:"%s",content:"%s",shadeClose:false}', '查看截图', url::to(['/'.$this->context->module->id.'/z1log-log/snapshoot', 'id' => $model->id])) ,
+                            'layer-config' => sprintf('{area:["700px","400px"],type:2,title:"%s",content:"%s",shadeClose:false}', '查看截图', url::to(['/'.$this->context->module->id.'/z1log-log/snapshoot', 'id' => $model->id])) ,
                         ]);
 
                         if (!empty($model->screenshot)) {

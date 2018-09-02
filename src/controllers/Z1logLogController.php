@@ -116,8 +116,8 @@ class Z1logLogController extends Controller
      */
     public function actionSnapshoot($id)
     {
-        Yii::$app->getModule('rate');
-        $this->layout = '//blank.php';
+        // Yii::$app->getModule('rate');
+        // $this->layout = '//blank.php';
 
         $model = $this->findModel($id);
         $sSnapshoot = base64_decode($model->screenshot);
@@ -133,7 +133,7 @@ class Z1logLogController extends Controller
             Yii::t('app', '请注意：此页面为快照页面不可以进行操作。'),
             $sSnapshoot);
         // return $this->renderContent($sContent);
-        return $this->renderAjax('snapshoot', ['content' => $sContent]);
+        return $this->render('snapshoot', ['content' => $sContent]);
         // return $this->renderContent('11');
     }
 
