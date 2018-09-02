@@ -10,32 +10,19 @@ use yii\helpers\ArrayHelper;
 /* @var $searchModel backend\models\search\PlaceSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
+\myzero1\adminlteiframe\gii\GiiAsset::register($this);
+
 // var_dump(\Yii::$app->controller->module->dependClass['RbacpRole']::find());exit;
 
 $this->title = '日志管理';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="place-index" id="search_form">
 
-    <div class="query">
+    <div class="adminlteiframe-action-box user2-search">
 
         <?php $form = ActiveForm::begin([
             'action' => ['index'],
             'method' => 'get',
-            'fieldConfig' => [
-                'template' => '
-                    <div class="search_item">
-                        <label>{label}：</label>
-                        <div>{input}</div>
-                    </div>
-                ',
-                'options' => [
-                    'tag' => false,
-                ],
-                'inputOptions' => [
-                    'class' => 'form-control-me',
-                ]
-            ],
         ]); ?>
 
         <?= $form->field($searchModel, 'text')?>
@@ -46,19 +33,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= $form->field($searchModel, 'user_name')?>
 
-        <div class="search_item">
-            <div>
-                <?= Html::submitButton('查询', ['class' => 'btn-sm btn btn-primary', 'style' => 'margin-top:2px;']) ?>
-            </div>
+        <div class="form-group aciotns">
+            <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
         </div>
-
         <?php ActiveForm::end(); ?>
 
     </div>
 
-    <div class="clear"></div>
+    <?php
 
-    <?= GridView::widget([
+/*
+    echo GridView::widget([
         'dataProvider' => $dataProvider,
         'options' => [
             'class' => 'list',
@@ -84,15 +69,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
         ',
-        'pager' => [
-            'class' => \myzero1app\themes\adminlte\widgets\LinkPager::className(),
-            'firstPageLabel'=>"首页",
-            'prevPageLabel'=>'上一页',
-            'nextPageLabel'=>'下一页',
-            'lastPageLabel'=>'末页',
-            'maxButtonCount'=>'0',
-            'hideOnSinglePage'=>false,
-        ],
+        // 'pager' => [
+        //     'class' => \myzero1app\themes\adminlte\widgets\LinkPager::className(),
+        //     'firstPageLabel'=>"首页",
+        //     'prevPageLabel'=>'上一页',
+        //     'nextPageLabel'=>'下一页',
+        //     'lastPageLabel'=>'末页',
+        //     'maxButtonCount'=>'0',
+        //     'hideOnSinglePage'=>false,
+        // ],
         'tableOptions' => ['class' => 'dataTables_wrapper no-footer'],
         'columns' => [
             'id',
@@ -128,6 +113,132 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
         ],
-    ]); ?> 
+    ]); */
+
+    ?> 
+
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'columns' => [
+            [
+                'headerOptions' => ['width'=>'30'],
+                'class' => yii\grid\CheckboxColumn::className(),
+                'name' => 'z1selected',
+                'checkboxOptions' => function ($model, $key, $index, $column) {
+                    return ['value' => $model->id];
+                },
+            ],
+            'id',
+            'text',
+            'url' => [
+                'label'=>'操作Url',
+                'attribute' => 'url',
+                'value' => function($row){
+                    return $row->url;
+                }
+            ],
+            'user_id',
+            'user_name',
+            'ip',
+            'created' => [
+                'label'=>'创建时间',
+                'attribute' => 'created',
+                'value' => function($row){
+                    return is_null($row->created) ? '' : date('Y-m-d H:i:s', $row->created);
+                }
+            ],
+            [
+                // 'contentOptions' => [
+                //     'width'=>'100'
+                // ],
+                'headerOptions' => [
+                    'width'=>'100px'
+                ],
+                'header' => Yii::t('rbacp', '查看截图'),
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}',
+
+                'buttons' => [
+                    'view' => function ($url, $model, $key) {
+                        $options = array_merge([
+                            'class'=>'btn btn-primary btn-xs use-layer',
+                            'layer-config' => sprintf('{type:2,title:"%s",content:"%s",shadeClose:false}', '查看截图', url::to(['/'.$this->context->module->id.'/z1log-log/snapshoot', 'id' => $model->id])) ,
+                        ]);
+
+                        if (!empty($model->screenshot)) {
+                            return Html::a('查看截图', '#', $options);
+                        }
+                    },
+                ],
+            ],
+        ],
+        'options' => [
+            'rbacp_policy_sku' => 'rbacp|rbacp-privilege|index|rbacpPolicy|list|rbacp权限列表',
+            'class' => 'adminlteiframe-gridview',
+        ],
+        'tableOptions' => [
+            'class' => 'gridview-table table table-bordered table-hover dataTable'
+        ],
+        'summary' => '
+            <div class="admlteiframe-gv-summary">
+                共 <span class="total">{totalCount}</span> 条
+            </div>
+        ',
+        'layout'=> '
+            {items}
+            <div class="admlteiframe-gv-footer">
+                {pager}{summary}
+            </div>
+        ',
+        'pager' => [
+            'class' => \myzero1\adminlteiframe\widgets\LinkPager::className(),
+            'firstPageLabel'=>"<<",
+            'prevPageLabel'=>'<',
+            'nextPageLabel'=>'>',
+            'lastPageLabel'=>'>>',
+            'maxButtonCount'=>'5',
+            // 'activePageCssClass' => 'btn btn-primary btn-xs',
+            'hideOnSinglePage'=>false,
+            'options' => [
+                'class' => 'admlteiframe-gv-pagination'
+            ],
+        ],
+    ]); ?>
 
 </div>
+
+<?php 
+$js=<<<eof
+    function getTableHeight(){
+        var heightToal = window.parent.$('html').outerHeight(true);
+        var filterHeight = $(".adminlteiframe-action-box").height();
+        height = heightToal - $(".adminlteiframe-action-box").height();// subtract filters
+        height = height - 260;// subtract others
+        return height;
+    }
+
+    function fixTable(){
+        if (!($(".gridview-table .empty").length > 0 || $(".gridview-table tbody tr").length == 0)) {
+                if(typeof mybootstrapTable!="undefined"){
+                    mybootstrapTable.bootstrapTable('destroy');
+                }
+
+                mybootstrapTable = $(".gridview-table").bootstrapTable('destroy').bootstrapTable({
+                    height: getTableHeight(),
+                    fixedColumns: true
+                });
+        }
+    }
+
+    fixTable();
+
+    $(window).resize(function(){
+        fixTable();
+    });
+
+eof;
+
+$this->registerJs($js);
+
+?>

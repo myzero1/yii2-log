@@ -1,6 +1,6 @@
 <?php
 
-namespace z1log;
+namespace myzero1\log;
 
 use Yii;
 use yii\base\BootstrapInterface;
@@ -18,6 +18,10 @@ use yii\base\Application;
  */
 class Module extends \yii\base\Module implements BootstrapInterface
 {
+    /**
+     * @var string  if it equal to 'myzero1', main.php will add autoload and alias
+     */
+    public static $z1layout = '@vendor/myzero1/yii2-theme-adminlteiframe/src/views/layouts/main';  //blank
     /**
      * @var string  if it equal to 'myzero1', main.php will add autoload and alias
      */
@@ -109,13 +113,15 @@ class Module extends \yii\base\Module implements BootstrapInterface
     }
 
     private function rewriteLibs($app){
-        \Yii::$classMap['yii\db\Command'] = '@myzero1/log/components/libs/Command.php';
+        \Yii::$classMap['yii\db\Command'] = '@vendor/myzero1/yii2-log/src/components/libs/Command.php';
     }
 
     private function addConfig($app){
         $aConfig = require(__DIR__ . '/main.php');
         
-        $z1logParams = array_merge($aConfig['params'], $this->params);
+        $z1logParams = array_merge($aConfig['params'], $this->params, $this->params);
+
+        // var_dump($z1logParams);exit;
 
         $app->params['z1log']['params']['template'] = $z1logParams['template'];
         $app->params['z1log']['params']['userInfo'] = $z1logParams['userInfo'];
@@ -173,7 +179,8 @@ class Module extends \yii\base\Module implements BootstrapInterface
 
             if (!isset(\Yii::$app->params['z1logRended'])) {
                 \Yii::$app->params['z1logRended'] = true;
-                \Yii::$app->layout = '//blank';
+                // \Yii::$app->layout = '//blank';
+                \Yii::$app->layout = self::$z1layout;
             }
 
         }
