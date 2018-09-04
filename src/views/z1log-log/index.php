@@ -29,6 +29,12 @@ $this->title = '日志管理';
 
         <?= $form->field($searchModel, 'url')?>
 
+        <?= $form->field($searchModel, 'uri')?>
+
+        <?= $form->field($searchModel, 'obj')?>
+
+        <?= $form->field($searchModel, 'remarks')?>
+
         <?= $form->field($searchModel, 'user_id')?>
 
         <?= $form->field($searchModel, 'user_name')?>
@@ -131,13 +137,10 @@ $this->title = '日志管理';
             ],
             'id',
             'text',
-            'url' => [
-                'label'=>'操作Url',
-                'attribute' => 'url',
-                'value' => function($row){
-                    return $row->url;
-                }
-            ],
+            'url',
+            'uri',
+            'obj',
+            'remarks',
             'user_id',
             'user_name',
             'ip',
@@ -157,18 +160,27 @@ $this->title = '日志管理';
                 ],
                 'header' => Yii::t('rbacp', '查看截图'),
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}',
+                'template' => '{view} {update}',
 
                 'buttons' => [
                     'view' => function ($url, $model, $key) {
                         $options = array_merge([
-                            'class'=>'btn btn-primary btn-xs use-layer',
+                            'class'=>'btn btn-info btn-xs use-layer',
                             'layer-config' => sprintf('{area:["700px","400px"],type:2,title:"%s",content:"%s",shadeClose:false}', '查看截图', url::to(['/'.$this->context->module->id.'/z1log-log/snapshoot', 'id' => $model->id])) ,
                         ]);
 
                         if (!empty($model->screenshot)) {
                             return Html::a('查看截图', '#', $options);
                         }
+                    },
+                    'update' => function ($url, $model, $key) {
+                        $options = array_merge([
+                            'class'=>'btn btn-primary btn-xs use-layer',
+                            'layer-config' => sprintf('{area:["700px","400px"],type:2,title:"%s",content:"%s",shadeClose:false}', '当前数据', $model->url) ,
+                        ]);
+
+                        return Html::a('当前数据', '#', $options);
+
                     },
                 ],
             ],

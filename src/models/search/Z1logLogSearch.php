@@ -19,7 +19,7 @@ class Z1logLogSearch extends Z1logLog
     {
         return [
             [['id', 'user_id', 'created'], 'integer'],
-            [['user_name', 'ip', 'url', 'text', 'screenshot'], 'safe'],
+            [['user_name', 'ip', 'url', 'text', 'screenshot', 'uri', 'obj', 'remarks'], 'safe'],
         ];
     }
 

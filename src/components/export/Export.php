@@ -12,6 +12,7 @@ class Export
      * @inheritdoc
      */
 
+
     /**
      * unset the z1logSaved session.
      * 
@@ -27,7 +28,7 @@ class Export
      * @author myzero1
      * @since 2.0.13
      */
-    public static function z1logAdd($model, $screenshot, $screenshotParams, $text){
+    public static function z1logAdd($model, $screenshot, $screenshotParams, $text, $obj, $remarks){
 
         if (!isset($_SESSION['z1logSaved'])) {
             $_SESSION['z1logSaved'] = 1;
@@ -62,18 +63,56 @@ class Export
                     `created`,
                     `url`,
                     `text`,
-                    `screenshot`
+                    `screenshot`,
+                    `uri`,
+                    `obj`,
+                    `remarks`
                 )
                 VALUES
-                    (NULL, %d, '%s', '%s', %d, '%s', '%s', '%s')",
+                    (NULL, %d, '%s', '%s', %d, '%s', '%s', '%s', '%s', '%s', '%s')",
                     \Yii::$app->params['z1log']['params']['userInfo']['id'](),
                     \Yii::$app->params['z1log']['params']['userInfo']['name'](),
                     \Yii::$app->request->userIP,
                     time(),
-                    \Yii::$app->request->pathInfo,
+                    \Yii::$app->request->url,
                     $textContent,
-                    base64_encode($screenshotContent));
+                    base64_encode($screenshotContent),
+                    \Yii::$app->request->pathInfo,
+                    $obj,
+                    $remarks);
 
         \Yii::$app->db->createCommand($sql)->execute();
+    }
+
+    /**
+     * unset the z1logSaved session.
+     * 
+     * @param string $obj    // 用户名：myzero1
+     *
+     *  \Yii::$app->params['dependClass']['z1logExport']::z1logAdd('all','z1user/user2/index', [], function(){return 'aa';});
+     *
+     * @return viod 
+     * 
+     * @author myzero1
+     * @since 2.0.13
+     */
+    public static function addObj($obj){
+        $_SESSION['z1log_addObj'] = $obj;
+    }
+
+    /**
+     * unset the z1logSaved session.
+     * 
+     * @param string $remarks    // 用户名："myzero1"->"myzero2"
+     *
+     *  \Yii::$app->params['dependClass']['z1logExport']::z1logAdd('all','z1user/user2/index', [], function(){return 'aa';});
+     *
+     * @return viod 
+     * 
+     * @author myzero1
+     * @since 2.0.13
+     */
+    public static function addRemarks($remarks){
+        $_SESSION['z1log_addRemarks'] = $remarks;
     }
 }

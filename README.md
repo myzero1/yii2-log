@@ -33,7 +33,7 @@ to the require section of your `composer.json` file.
 Setting
 -----
 
-Once the extension is installed, simply modify your application configuration as follows:
+Once the extension is installed, simply modify your application configuration(main.php) as follows:
 
 ```php
 return [
@@ -80,6 +80,10 @@ return [
                             return '修改用户'; 
                         },
                         'screenshot' => 'user2/update', // The template of screenshot
+                        'obj' => [ // for obj
+                            'label' => '.field-user2-username .control-label',
+                            'value' => '#user2-username', // css3 selector
+                        ],
                     ],
                 ],
             ],
@@ -108,4 +112,41 @@ http://localhost/path/to/index.php/z1log/z1log-log/index
 ```
 
 
-` Notice:` You just setting in main.php.
+### use addObj($obj) and addRemarks($obj) before save() ###
+
+```php
+
+    /**
+     * Updates an existing User2 model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post())) {
+            \myzero1\log\components\export\Export::addObj('用户名：myzero1');
+            \myzero1\log\components\export\Export::addRemarks('用户名："myzero1"->"myzero3"');
+            if ($model->save()) {
+                Yii::$app->getSession()->setFlash('success', '修改成功');
+                return \myzero1\adminlteiframe\helpers\Tool::redirectParent(['index']);
+            }
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+
+```
+
+### use z1logAdd($model, $screenshot, $screenshotParams, $text, $obj, $remarks) anywhere ###
+
+```php
+
+\myzero1\log\components\export\Export::z1logAdd('all', 'user2/update', ['id'=>21], function(){return 'update user'}, 'username：myzero1', 'status:(1)->(2)')
+
+```
+

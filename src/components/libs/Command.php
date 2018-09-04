@@ -10,6 +10,7 @@ namespace yii\db;
 use Yii;
 use yii\base\Component;
 use yii\base\NotSupportedException;
+use PhpQuery\PhpQuery as phpQuery;
 
 /**
  * Command represents a SQL statement to be executed against a database.
@@ -1353,6 +1354,27 @@ class Command extends Component
                 $text = \Yii::$app->params['z1log']['params']['template'][$pathInfo]['text']();
             }
 
+            // get obj
+            $remarks = '';
+            $obj = '';
+
+            $doc = phpQuery::newDocument($screenshot);
+            $objLabel = $doc[\Yii::$app->params['z1log']['params']['template'][$pathInfo]['obj']['label']]->text();
+            $objVaule = $doc[\Yii::$app->params['z1log']['params']['template'][$pathInfo]['obj']['value']]->val();
+            $objs = sprintf('%s:%s', $objLabel, $objVaule);
+
+            if (isset($_SESSION['z1log_addObj'])) {
+                $obj = $_SESSION['z1log_addObj'];
+                unset($_SESSION['z1log_addObj']);
+            } else if ( $obj != ':' ) {
+                $obj = $objs;
+            }
+
+            if (isset($_SESSION['z1log_addRemarks'])) {
+                $remarks = $_SESSION['z1log_addRemarks'];
+                unset($_SESSION['z1log_addRemarks']);
+            }
+
             $sql = sprintf("INSERT INTO `z1log_log` (
                         `id`,
                         `user_id`,
@@ -1361,17 +1383,25 @@ class Command extends Component
                         `created`,
                         `url`,
                         `text`,
-                        `screenshot`
+                        `screenshot`,
+                        `uri`,
+                        `obj`,
+                        `remarks`
                     )
                     VALUES
-                        (NULL, %d, '%s', '%s', %d, '%s', '%s', '%s')",
+                        (NULL, %d, '%s', '%s', %d, '%s', '%s', '%s', '%s', '%s', '%s')",
                         \Yii::$app->params['z1log']['params']['userInfo']['id'](),
                         \Yii::$app->params['z1log']['params']['userInfo']['name'](),
                         \Yii::$app->request->userIP,
                         time(),
-                        $pathInfo,
+                        \Yii::$app->request->url,
                         $text,
-                        base64_encode($screenshot));
+                        base64_encode($screenshot),
+                        $pathInfo,
+                        $obj,
+                        $remarks);
+
+            // var_dump($sql);exit;
 
             \Yii::$app->db->createCommand($sql)->execute();
         }
