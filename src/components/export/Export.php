@@ -19,7 +19,7 @@ class Export
      * @param string $model text,screenshot,all
      * @param string $screenshot 'z1user/user2/update' The template router
      * @param array $screenshotParams ['id'=>21]
-     * @param string $text function(){return 'aa';}
+     * @param string $text
      *
      *  \Yii::$app->params['dependClass']['z1logExport']::z1logAdd('all','z1user/user2/index', [], function(){return 'aa';});
      *
@@ -28,7 +28,7 @@ class Export
      * @author myzero1
      * @since 2.0.13
      */
-    public static function z1logAdd($model, $screenshot, $screenshotParams, $text, $obj, $remarks){
+    public static function z1logAdd($model, $screenshot, array $screenshotParams, $text, $obj='', $remarks=''){
 
         if (!isset($_SESSION['z1logSaved'])) {
             $_SESSION['z1logSaved'] = 1;
@@ -51,10 +51,6 @@ class Export
             $screenshotContent = $sHtmlCom;
         }
 
-        if (in_array($model, ['all','text']) ) {
-            $textContent = $text();
-        }
-
         $sql = sprintf("INSERT INTO `z1log_log` (
                     `id`,
                     `user_id`,
@@ -75,7 +71,7 @@ class Export
                     \Yii::$app->request->userIP,
                     time(),
                     \Yii::$app->request->url,
-                    $textContent,
+                    $text,
                     base64_encode($screenshotContent),
                     \Yii::$app->request->pathInfo,
                     $obj,

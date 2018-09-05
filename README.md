@@ -94,12 +94,6 @@ return [
 ];
 ```
 
-Apply migrations:
-
-```cmd
-    php yii migrate --migrationPath=@vendor/myzero1/yii2-log/src/migrations
-```
-
 
 Usage
 -----
@@ -152,7 +146,43 @@ http://localhost/path/to/index.php/z1log/z1log-log/index
 
 ```php
 
-\myzero1\log\components\export\Export::z1logAdd('all', 'user2/update', ['id'=>21], function(){return 'update user'}, 'username：myzero1', 'status:(1)->(2)')
+\myzero1\log\components\export\Export::z1logAdd('all', 'user2/update', ['id'=>$model->id], 'create user', sprintf('username:%s', $model->username), '');
 
 ```
 
+Usage scenario
+----
+
+* Just add config to ` mian.php `,when we want to add log,there is updating with the action.· ` The screenshots will record the data before updating. `
+
+* Use ` z1logAdd ` api,when we are create a new record.we get he id of the new record at action,so easy
+.
+
+```PHP 
+
+
+    /**
+     * Creates a new User2 model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreate()
+    {
+        $model = new User2();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            
+            \myzero1\log\components\export\Export::z1logAdd('all', 'user2/update', ['id'=>$model->id], 'create user', sprintf('username:%s', $model->username), '');
+
+            Yii::$app->getSession()->setFlash('success', '添加成功');
+            return \myzero1\adminlteiframe\helpers\Tool::redirectParent(['index']);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+```
+
+* Use ` z1logAdd ` api,when we want to add log,but there is not updating with the action.
