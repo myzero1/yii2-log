@@ -76,7 +76,10 @@ class Z1logLogSearch extends Z1logLog
             ->andFilterWhere(['like', 'ip', $this->ip])
             ->andFilterWhere(['like', 'url', $this->url])
             ->andFilterWhere(['like', 'text', $this->text])
-            ->andFilterWhere(['like', 'screenshot', $this->screenshot]);
+            ->andFilterWhere(['like', 'screenshot', $this->screenshot])
+            ->andFilterWhere(['like', 'uri', $this->uri])
+            ->andFilterWhere(['like', 'obj', $this->obj])
+            ->andFilterWhere(['like', 'remarks', $this->remarks]);
 
         return $dataProvider;
     }
