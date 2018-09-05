@@ -29,6 +29,12 @@ $this->title = '日志管理';
 
         <?= $form->field($searchModel, 'url')?>
 
+        <?= $form->field($searchModel, 'uri')?>
+
+        <?= $form->field($searchModel, 'obj')?>
+
+        <?= $form->field($searchModel, 'remarks')?>
+
         <?= $form->field($searchModel, 'user_id')?>
 
         <?= $form->field($searchModel, 'user_name')?>
@@ -39,84 +45,6 @@ $this->title = '日志管理';
         <?php ActiveForm::end(); ?>
 
     </div>
-
-    <?php
-
-/*
-    echo GridView::widget([
-        'dataProvider' => $dataProvider,
-        'options' => [
-            'class' => 'list',
-        ],
-        'summary' => '
-            <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
-                <span>共<font id="P_RecordCount" style="color:Red;">{totalCount}</font>条记录</span>
-                <span>第<font id="P_Index" style="color:Red;">{page}</font>/<font id="P_PageCount" style="color:Red;">{pageCount}</font>页</span>
-                <span>每页<font id="P_PageSize" style="color:Red;">{count}</font>条记录</span>
-            </div>
-        ',
-        'layout'=> '
-            {items}
-            <div class="footer-clearfix"></div>
-            <div class="footer">
-                <div class="row box-footer clearfix" id="PageTurn">
-                    <div class="col-sm-5">
-                        {summary}
-                    </div>
-                    <div class="col-sm-7">
-                        {pager}
-                    </div>
-                </div>
-            </div>
-        ',
-        // 'pager' => [
-        //     'class' => \myzero1app\themes\adminlte\widgets\LinkPager::className(),
-        //     'firstPageLabel'=>"首页",
-        //     'prevPageLabel'=>'上一页',
-        //     'nextPageLabel'=>'下一页',
-        //     'lastPageLabel'=>'末页',
-        //     'maxButtonCount'=>'0',
-        //     'hideOnSinglePage'=>false,
-        // ],
-        'tableOptions' => ['class' => 'dataTables_wrapper no-footer'],
-        'columns' => [
-            'id',
-            'text',
-            'screenshot' => [
-                'label'=>'截图日志',
-                'content' => function($row){
-                    return Html::tag ('span', '查看截图',[
-                        'class'=>'list_r list_crud_act',
-                        'crud-url'=>url::to(['/myzero1/log/z1log-log/snapshoot', 'id' => $row->id]),
-                        'crud-method'=>'get',
-                        'crud-data'=>'',
-                        'win-title'=>'查看截图',
-                        'win-width'=>'800px',
-                    ]);
-                }
-            ],
-            'url' => [
-                'label'=>'操作Url',
-                'attribute' => 'url',
-                'value' => function($row){
-                    return $row->url;
-                }
-            ],
-            'user_id',
-            'user_name',
-            'ip',
-            'created' => [
-                'label'=>'创建时间',
-                'attribute' => 'created',
-                'value' => function($row){
-                    return is_null($row->created) ? '' : date('Y-m-d H:i:s', $row->created);
-                }
-            ],
-        ],
-    ]); */
-
-    ?> 
-
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -131,13 +59,10 @@ $this->title = '日志管理';
             ],
             'id',
             'text',
-            'url' => [
-                'label'=>'操作Url',
-                'attribute' => 'url',
-                'value' => function($row){
-                    return $row->url;
-                }
-            ],
+            'url',
+            'uri',
+            'obj',
+            'remarks',
             'user_id',
             'user_name',
             'ip',
@@ -157,18 +82,27 @@ $this->title = '日志管理';
                 ],
                 'header' => Yii::t('rbacp', '查看截图'),
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}',
+                'template' => '{view} {update}',
 
                 'buttons' => [
                     'view' => function ($url, $model, $key) {
                         $options = array_merge([
-                            'class'=>'btn btn-primary btn-xs use-layer',
+                            'class'=>'btn btn-info btn-xs use-layer',
                             'layer-config' => sprintf('{area:["700px","400px"],type:2,title:"%s",content:"%s",shadeClose:false}', '查看截图', url::to(['/'.$this->context->module->id.'/z1log-log/snapshoot', 'id' => $model->id])) ,
                         ]);
 
                         if (!empty($model->screenshot)) {
                             return Html::a('查看截图', '#', $options);
                         }
+                    },
+                    'update' => function ($url, $model, $key) {
+                        $options = array_merge([
+                            'class'=>'btn btn-primary btn-xs use-layer',
+                            'layer-config' => sprintf('{area:["700px","400px"],type:2,title:"%s",content:"%s",shadeClose:false}', '修改当前数据', $model->url) ,
+                        ]);
+
+                        return Html::a('当前数据', '#', $options);
+
                     },
                 ],
             ],
