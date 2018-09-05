@@ -80,7 +80,7 @@ $this->title = '日志管理';
                 'headerOptions' => [
                     'width'=>'100px'
                 ],
-                'header' => Yii::t('rbacp', '查看截图'),
+                'header' => Yii::t('rbacp', '对比数据'),
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{view} {update}',
 
@@ -88,17 +88,17 @@ $this->title = '日志管理';
                     'view' => function ($url, $model, $key) {
                         $options = array_merge([
                             'class'=>'btn btn-info btn-xs use-layer',
-                            'layer-config' => sprintf('{area:["700px","400px"],type:2,title:"%s",content:"%s",shadeClose:false}', '查看截图', url::to(['/'.$this->context->module->id.'/z1log-log/snapshoot', 'id' => $model->id])) ,
+                            'layer-config' => sprintf('{area:["700px","400px"],type:2,title:"%s",content:"%s",shadeClose:false}', '查看截图数据', url::to(['/'.$this->context->module->id.'/z1log-log/snapshoot', 'id' => $model->id])) ,
                         ]);
 
                         if (!empty($model->screenshot)) {
-                            return Html::a('查看截图', '#', $options);
+                            return Html::a('截图数据', '#', $options);
                         }
                     },
                     'update' => function ($url, $model, $key) {
                         $options = array_merge([
                             'class'=>'btn btn-primary btn-xs use-layer',
-                            'layer-config' => sprintf('{area:["700px","400px"],type:2,title:"%s",content:"%s",shadeClose:false}', '修改当前数据', $model->url) ,
+                            'layer-config' => '{area:["700px","400px"],type:2,title:"查看当前数据",content:"'.$model->url.'",shadeClose:false,success: function(layero, index){layero.children(".layui-layer-content").append(" <div style=\"width: 100%;height: 100%;top: 0;position: absolute;color: #f39c12;text-align: center;font-size: 18px;font-weight: bold;\">此为当前数据快照不可修改!</div>");layero.children(".layui-layer-content").append("<script type=\"text/javascript\">document.oncontextmenu=new Function(\"event.returnValue=false;\");document.onselectstart=new Function(\"event.returnValue=false;\");</script>")}}',
                         ]);
 
                         return Html::a('当前数据', '#', $options);
