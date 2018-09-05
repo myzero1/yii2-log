@@ -35,8 +35,8 @@ class Export
         }
 
         $screenshotContent = '';
-        $textContent = '';
-        
+        $url = '';
+
         if (in_array($model, ['all','screenshot']) ) {
             $params = \Yii::$app->request->get();
             \Yii::$app->params['z1log']['params']['z1logToRending'] = true;
@@ -49,6 +49,9 @@ class Export
             $sHtmlCom = str_replace('type="submit"', 'typeDisabled="submit"', $sHtmlCom);
 
             $screenshotContent = $sHtmlCom;
+
+            array_unshift($params, '/' . $screenshot);
+            $url = \yii\helpers\Url::to($params);
         }
 
         $sql = sprintf("INSERT INTO `z1log_log` (
@@ -70,7 +73,7 @@ class Export
                     \Yii::$app->params['z1log']['params']['userInfo']['name'](),
                     \Yii::$app->request->userIP,
                     time(),
-                    \Yii::$app->request->url,
+                    $url,
                     $text,
                     base64_encode($screenshotContent),
                     \Yii::$app->request->pathInfo,

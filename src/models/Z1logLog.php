@@ -53,7 +53,7 @@ class Z1logLog extends \yii\db\ActiveRecord
             'user_name' => '操作人名称',
             'ip' => '操作IP',
             'created' => '操作时间',
-            'url' => '操作路由',
+            'url' => '截图url',
             'text' => '文本日志',
             'screenshot' => '截图日志',
             'uri' => '操作模块',
