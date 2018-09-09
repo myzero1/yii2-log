@@ -1386,7 +1386,7 @@ class Command extends Component
                         `screenshot`,
                         `uri`,
                         `obj`,
-                        `remarks`
+                        `remark`
                     )
                     VALUES
                         (NULL, %d, '%s', '%s', %d, '%s', '%s', '%s', '%s', '%s', '%s')",

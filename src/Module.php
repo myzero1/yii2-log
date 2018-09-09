@@ -178,11 +178,11 @@ class Module extends \yii\base\Module implements BootstrapInterface
                 $layout = \Yii::$app->controller->layout;
             }
 
-            if (!isset(\Yii::$app->params['z1logRended'])) {
-                \Yii::$app->params['z1logRended'] = true;
-                // \Yii::$app->layout = '//blank';
-                \Yii::$app->layout = self::$z1layout;
-            }
+            // if (!isset(\Yii::$app->params['z1logRended'])) {
+            //     \Yii::$app->params['z1logRended'] = true;
+            //     // \Yii::$app->layout = '//blank';
+            //     \Yii::$app->layout = self::$z1layout;
+            // }
 
         }
 
