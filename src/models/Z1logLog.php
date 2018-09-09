@@ -17,7 +17,7 @@ use Yii;
  * @property string $screenshot 截图日志
  * @property string $uri 操作模块uri
  * @property string $obj 访问对象信息,一般为唯一键
- * @property string $remarks 备注信息
+ * @property string $remark 备注信息
  */
 class Z1logLog extends \yii\db\ActiveRecord
 {
@@ -38,7 +38,7 @@ class Z1logLog extends \yii\db\ActiveRecord
             [['user_id', 'user_name', 'url', 'text', 'screenshot'], 'required'],
             [['user_id', 'created'], 'integer'],
             [['text', 'screenshot'], 'string'],
-            [['user_name', 'ip', 'url', 'uri', 'obj', 'remarks'], 'string', 'max' => 255],
+            [['user_name', 'ip', 'url', 'uri', 'obj', 'remark'], 'string', 'max' => 255],
         ];
     }
 
@@ -58,7 +58,7 @@ class Z1logLog extends \yii\db\ActiveRecord
             'screenshot' => '截图日志',
             'uri' => '操作模块',
             'obj' => '操作对象',
-            'remarks' => '备注',
+            'remark' => '备注',
         ];
     }
 }
