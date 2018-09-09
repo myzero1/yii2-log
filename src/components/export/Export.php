@@ -94,36 +94,4 @@ class Export
 
         \Yii::$app->db->createCommand($sql)->execute();
     }
-
-    /**
-     * unset the z1logSaved session.
-     * 
-     * @param string $obj    // 用户名：myzero1
-     *
-     *  \Yii::$app->params['dependClass']['z1logExport']::z1logAdd('all','z1user/user2/index', [], function(){return 'aa';});
-     *
-     * @return viod 
-     * 
-     * @author myzero1
-     * @since 2.0.13
-     */
-    public static function addObj($obj){
-        $_SESSION['z1log_addObj'] = $obj;
-    }
-
-    /**
-     * unset the z1logSaved session.
-     * 
-     * @param string $remarks    // 用户名："myzero1"->"myzero2"
-     *
-     *  \Yii::$app->params['dependClass']['z1logExport']::z1logAdd('all','z1user/user2/index', [], function(){return 'aa';});
-     *
-     * @return viod 
-     * 
-     * @author myzero1
-     * @since 2.0.13
-     */
-    public static function addRemarks($remarks){
-        $_SESSION['z1log_addRemarks'] = $remarks;
-    }
 }
