@@ -1361,47 +1361,50 @@ class Command extends Component
             $doc = phpQuery::newDocument($screenshot);
             $objLabel = $doc[\Yii::$app->params['z1log']['params']['template'][$pathInfo]['obj']['label']]->text();
             $objVaule = $doc[\Yii::$app->params['z1log']['params']['template'][$pathInfo]['obj']['value']]->val();
-            $objs = sprintf('%s:%s', $objLabel, $objVaule);
+            $obj = sprintf('%s:%s', $objLabel, $objVaule);
 
-            if (isset($_SESSION['z1log_addObj'])) {
-                $obj = $_SESSION['z1log_addObj'];
-                unset($_SESSION['z1log_addObj']);
-            } else if ( $obj != ':' ) {
-                $obj = $objs;
+            $remarks = \Yii::$app->params['z1log']['params']['template'][$pathInfo]['remarks'];
+
+            $filedsDefault = [
+                'id',
+                'user_id',
+                'user_name',
+                'ip',
+                'created',
+                'url',
+                'text',
+                'screenshot',
+                'uri',
+                'obj',
+            ];
+            $remarksKeys = array_keys($remarks);
+            $diffKeys = array_intersect (\Yii::$app->params['z1log']['params']['remarksFieldsKey'], $remarksKeys);
+            if (count($diffKeys)!= count($remarksKeys) || count($diffKeys)!= count(\Yii::$app->params['z1log']['params']['remarksFieldsKey'])) {
+                exit('the remarks fileds is wrong.');
+            }
+            $fileds = array_merge($filedsDefault, $remarksKeys);
+
+            $valueDefaults = [
+                'user_id' => \Yii::$app->params['z1log']['params']['userInfo']['id'](),
+                'user_name' => \Yii::$app->params['z1log']['params']['userInfo']['name'](),
+                'ip' => \Yii::$app->request->userIP,
+                'created' => time(),
+                'url' => \Yii::$app->request->url,
+                'text' => $text,
+                'screenshot' => base64_encode($screenshot),
+                'uri' => $pathInfo,
+                'obj' => $obj,
+            ];
+
+            foreach ($remarks as $key => $value) {
+                $remarks[$key] = $value();
             }
 
-            if (isset($_SESSION['z1log_addRemarks'])) {
-                $remarks = $_SESSION['z1log_addRemarks'];
-                unset($_SESSION['z1log_addRemarks']);
-            }
+            $values = array_merge($valueDefaults, $remarks);
 
-            $sql = sprintf("INSERT INTO `z1log_log` (
-                        `id`,
-                        `user_id`,
-                        `user_name`,
-                        `ip`,
-                        `created`,
-                        `url`,
-                        `text`,
-                        `screenshot`,
-                        `uri`,
-                        `obj`,
-                        `remarks`
-                    )
-                    VALUES
-                        (NULL, %d, '%s', '%s', %d, '%s', '%s', '%s', '%s', '%s', '%s')",
-                        \Yii::$app->params['z1log']['params']['userInfo']['id'](),
-                        \Yii::$app->params['z1log']['params']['userInfo']['name'](),
-                        \Yii::$app->request->userIP,
-                        time(),
-                        \Yii::$app->request->url,
-                        $text,
-                        base64_encode($screenshot),
-                        $pathInfo,
-                        $obj,
-                        $remarks);
-
-            // var_dump($sql);exit;
+            $sql = sprintf("INSERT INTO `z1log_log` ( `%s` ) VALUES (NULL, '%s')",
+                        implode('`,`', $fileds),
+                        implode("','", $values));
 
             \Yii::$app->db->createCommand($sql)->execute();
         }

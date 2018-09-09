@@ -33,7 +33,7 @@ $this->title = '日志管理';
 
         <?= $form->field($searchModel, 'obj')?>
 
-        <?= $form->field($searchModel, 'remarks')?>
+        <?= $form->field($searchModel, 'remark')?>
 
         <?= $form->field($searchModel, 'user_id')?>
 
@@ -62,7 +62,7 @@ $this->title = '日志管理';
             'url',
             'uri',
             'obj',
-            'remarks',
+            'remark',
             'user_id',
             'user_name',
             'ip',

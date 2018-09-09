@@ -22,7 +22,7 @@ class m171129_120101_z1log_log extends \yii\db\Migration
             'screenshot' => sprintf("%s NOT NULL COMMENT '%s'",Schema::TYPE_TEXT,'截图日志'),
             'uri' => sprintf("%s(255) COMMENT '%s'",Schema::TYPE_STRING,'操作模块uri'),
             'obj' => sprintf("%s(255) COMMENT '%s'",Schema::TYPE_STRING,'访问对象信息,一般为唯一键'),
-            'remarks' => sprintf("%s(255) NOT NULL COMMENT '%s'",Schema::TYPE_STRING,'备注信息'),
+            'remark' => sprintf("%s(255) COMMENT '%s'",Schema::TYPE_STRING,'备注信息'),
         ], $tableOptions);
     }
 

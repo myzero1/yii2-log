@@ -19,7 +19,7 @@ class Z1logLogSearch extends Z1logLog
     {
         return [
             [['id', 'user_id', 'created'], 'integer'],
-            [['user_name', 'ip', 'url', 'text', 'screenshot', 'uri', 'obj', 'remarks'], 'safe'],
+            [['user_name', 'ip', 'url', 'text', 'screenshot', 'uri', 'obj', 'remark'], 'safe'],
         ];
     }
 
@@ -79,7 +79,7 @@ class Z1logLogSearch extends Z1logLog
             ->andFilterWhere(['like', 'screenshot', $this->screenshot])
             ->andFilterWhere(['like', 'uri', $this->uri])
             ->andFilterWhere(['like', 'obj', $this->obj])
-            ->andFilterWhere(['like', 'remarks', $this->remarks]);
+            ->andFilterWhere(['like', 'remark', $this->remark]);
 
         return $dataProvider;
     }

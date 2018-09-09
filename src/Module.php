@@ -125,6 +125,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
 
         $app->params['z1log']['params']['template'] = $z1logParams['template'];
         $app->params['z1log']['params']['userInfo'] = $z1logParams['userInfo'];
+        $app->params['z1log']['params']['remarksFieldsKey'] = $z1logParams['remarksFieldsKey'];
 
         if (isset($z1logParams['urlManager']['rules'])) {
             $app->urlManager->addRules(
@@ -177,11 +178,11 @@ class Module extends \yii\base\Module implements BootstrapInterface
                 $layout = \Yii::$app->controller->layout;
             }
 
-            if (!isset(\Yii::$app->params['z1logRended'])) {
-                \Yii::$app->params['z1logRended'] = true;
-                // \Yii::$app->layout = '//blank';
-                \Yii::$app->layout = self::$z1layout;
-            }
+            // if (!isset(\Yii::$app->params['z1logRended'])) {
+            //     \Yii::$app->params['z1logRended'] = true;
+            //     // \Yii::$app->layout = '//blank';
+            //     \Yii::$app->layout = self::$z1layout;
+            // }
 
         }
 
