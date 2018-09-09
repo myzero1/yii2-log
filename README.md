@@ -102,6 +102,11 @@ return [
 ];
 ```
 
+Apply migrations:
+
+```cmd
+    php yii migrate --migrationPath=@vendor/myzero1/yii2-log/src/migrations
+```
 
 Usage
 -----
