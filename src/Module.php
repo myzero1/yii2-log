@@ -212,7 +212,9 @@ class Module extends \yii\base\Module implements BootstrapInterface
      */
     public static function z1logAfterRequest($event)
     {
-        unset($_SESSION['z1logSaved']);
+        if (isset($_SESSION['z1logSaved'])) {
+            unset($_SESSION['z1logSaved']);
+        }
     }
 
     /**
