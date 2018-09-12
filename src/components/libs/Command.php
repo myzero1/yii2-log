@@ -1361,7 +1361,9 @@ class Command extends Component
             $doc = phpQuery::newDocument($screenshot);
             $objLabel = $doc[\Yii::$app->params['z1log']['params']['template'][$pathInfo]['obj']['label']]->text();
             $objVaule = $doc[\Yii::$app->params['z1log']['params']['template'][$pathInfo]['obj']['value']]->val();
-            $obj = sprintf('%s:%s', $objLabel, $objVaule);
+            if (!(empty($objLabel) && empty($objVaule))) {
+                $obj = sprintf('%s:%s', $objLabel, $objVaule);
+            }
 
             $remarks = \Yii::$app->params['z1log']['params']['template'][$pathInfo]['remarks'];
 
