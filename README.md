@@ -128,7 +128,7 @@ http://localhost/path/to/index.php/z1log/z1log-log/index
 
 ```php
 
-\myzero1\log\components\export\Export::z1logAdd('all', 'user2/update', ['id'=>$model->id], 'create user', sprintf('username:%s', $model->username), '');
+\myzero1\log\components\export\Export::z1logAdd('all', 'user2/update', ['id'=>$model->id], 'create user', sprintf('username:%s', $model->username), ['remark'=>'this is a remark']);
 
 ```
 
