@@ -1342,7 +1342,7 @@ class Command extends Component
             $text = '';
 
             if (in_array(\Yii::$app->params['z1log']['params']['template'][$pathInfo]['model'], ['screenshot', 'all'])) {
-                if ($_SESSION['z1logSaved']==1) {
+                if ( isset($_SESSION['z1logSaved']) && $_SESSION['z1logSaved']==1 ) {
                     $_SESSION['z1logSaved']= $_SESSION['z1logSaved'] + 1;
                     if (isset(\Yii::$app->params['z1log']['sHtml'])) {
                         $screenshot = \Yii::$app->params['z1log']['sHtml'];
