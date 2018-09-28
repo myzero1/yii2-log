@@ -1,5 +1,15 @@
 <?php
 	\myzero1\adminlteiframe\gii\GiiAsset::register($this);
+	$pluginsBundle = \myzero1\adminlteiframe\assets\php\components\plugins\SwitchAsset::register($this);
+    $pluginsBundle->css[] = 'libs/daterangepicker/daterangepicker.css';
+    $pluginsBundle->css[] = 'libs/select2/select2.min.css';
+    $pluginsBundle->css[] = 'libs/ztree3/css/zTreeStyle/zTreeStyle.css';
+    $pluginsBundle->css[] = 'libs/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css';
+
+	// deal,yii2 jQuery(...).yiiActiveForm is not a function
+	use yii\widgets\ActiveForm;
+	$form = ActiveForm::begin();
+	$form = ActiveForm::end();
 ?>
 
 <div id='snapshoot'>
