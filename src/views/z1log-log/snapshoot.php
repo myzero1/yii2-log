@@ -1,5 +1,10 @@
 <?php
 	\myzero1\adminlteiframe\gii\GiiAsset::register($this);
+
+	// deal,yii2 jQuery(...).yiiActiveForm is not a function
+	use yii\widgets\ActiveForm;
+	$form = ActiveForm::begin();
+	$form = ActiveForm::end();
 ?>
 
 <div id='snapshoot'>
