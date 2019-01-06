@@ -11,9 +11,9 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "yiisoft/yii2": "~2.0",
-        "myzero1/yii2-theme-adminlteiframe": "*",
-        "cagartner/phpquery": "*"
+        "yiisoft/yii2": "~2.0.6",
+        "myzero1/yii2-theme-adminlteiframe": "1.2.7",
+        "cagartner/phpquery": "0.9.8"
     },
     "autoload": {
         "psr-4": { "myzero1\\log\\": "src/" }

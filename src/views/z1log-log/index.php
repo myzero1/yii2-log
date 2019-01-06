@@ -2,21 +2,20 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\bootstrap\Modal;
 use yii\grid\GridView;
 use yii\widgets\ActiveForm;
-use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\models\search\PlaceSearch */
+/* @var $searchModel backend\models\searchs\User3Search */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-\myzero1\adminlteiframe\gii\GiiAsset::register($this);
-
-// var_dump(\Yii::$app->controller->module->dependClass['RbacpRole']::find());exit;
+myzero1\adminlteiframe\gii\GiiAsset::register($this);
 
 $this->title = '日志管理';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="place-index" id="search_form">
+<div class="user2-index">
 
     <div class="adminlteiframe-action-box user2-search">
 
@@ -48,6 +47,7 @@ $this->title = '日志管理';
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        // 'filterModel' => $searchModel,
         'columns' => [
             [
                 'headerOptions' => ['width'=>'30'],
@@ -108,11 +108,12 @@ $this->title = '日志管理';
             ],
         ],
         'options' => [
-            'rbacp_policy_sku' => 'rbacp|rbacp-privilege|index|rbacpPolicy|list|rbacp权限列表',
             'class' => 'adminlteiframe-gridview',
         ],
         'tableOptions' => [
-            'class' => 'gridview-table table table-bordered table-hover dataTable'
+            'class' => 'gridview-table table table-bordered table-hover dataTable',
+            'data-provide' => 'z1table',
+            'data-z1table-config' => '{"fixedColumns":true,"subtraction1":100,"subtraction2Selector":[".adminlteiframe-action-box"]}',
         ],
         'summary' => '
             <div class="admlteiframe-gv-summary">
@@ -141,38 +142,3 @@ $this->title = '日志管理';
     ]); ?>
 
 </div>
-
-<?php 
-$js=<<<eof
-    function getTableHeight(){
-        var heightToal = window.parent.$('html').outerHeight(true);
-        var filterHeight = $(".adminlteiframe-action-box").height();
-        height = heightToal - $(".adminlteiframe-action-box").height();// subtract filters
-        height = height - 260;// subtract others
-        return height;
-    }
-
-    function fixTable(){
-        if (!($(".gridview-table .empty").length > 0 || $(".gridview-table tbody tr").length == 0)) {
-                if(typeof mybootstrapTable!="undefined"){
-                    mybootstrapTable.bootstrapTable('destroy');
-                }
-
-                mybootstrapTable = $(".gridview-table").bootstrapTable('destroy').bootstrapTable({
-                    height: getTableHeight(),
-                    fixedColumns: true
-                });
-        }
-    }
-
-    fixTable();
-
-    $(window).resize(function(){
-        fixTable();
-    });
-
-eof;
-
-$this->registerJs($js);
-
-?>
