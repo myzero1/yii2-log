@@ -23,7 +23,7 @@ php composer.phar require myzero1/yii2-log：1.*
 or add
 
 ```
-"myzero1/yii2-log": "~1"
+"myzero1/yii2-log": "*"
 ```
 
 to the require section of your `composer.json` file.
@@ -55,7 +55,7 @@ return [
                 ],
                 'remarksFieldsKey' => [
                     'remark', // default filed
-                    'r1', // custom field, can add it by yourself
+                    // 'r1', // custom field, can add it by yourself
                 ],
                 'userInfo' => [
                     'id' => function(){
@@ -78,6 +78,24 @@ return [
                     }
                 ],
                 'template' => [
+                    'user2/create' => [
+                        'model' => 'all', // text,screenshot,all
+                        'addToTable' => 'user', // for creating
+                        'text' => function(){
+                            return '添加用户'; 
+                        },
+                        'screenshot' => 'user2/update', // The template of screenshot
+                        'obj' => [
+                            'label' => '.field-user2-username .control-label',
+                            'value' => '#user2-username',
+                        ],
+                        'remarks' => [// the items must be Closure
+                            'remark' => function(){
+                                return sprintf('Create it at %s.', date('Y-m-d H:i:s'));
+                            },
+                            // 'r1' => function(){return 'r1'.time();},
+                        ],
+                    ],
                     'user2/update' => [
                         'model' => 'all', // text,screenshot,all
                         'text' => function(){
@@ -89,8 +107,25 @@ return [
                             'value' => '#user2-username',
                         ],
                         'remarks' => [// the items must be Closure
-                            'remark' => function(){return 'default remark'.time();},
-                            'r1' => function(){return 'r1'.time();},
+                            'remark' => function(){
+                                return sprintf('Update it at %s.', date('Y-m-d H:i:s'));
+                            },
+                        ],
+                    ],
+                    'user2/delete' => [
+                        'model' => 'all', // text,screenshot,all
+                        'text' => function(){
+                            return '删除用户'; 
+                        },
+                        'screenshot' => 'user2/update', // The template of screenshot
+                        'obj' => [
+                            'label' => '.field-user2-username .control-label',
+                            'value' => '#user2-username',
+                        ],
+                        'remarks' => [// the items must be Closure
+                            'remark' => function(){
+                                return sprintf('Delete it at %s.', date('Y-m-d H:i:s'));
+                            },
                         ],
                     ],
                 ],

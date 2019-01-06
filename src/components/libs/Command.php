@@ -11,6 +11,7 @@ use Yii;
 use yii\base\Component;
 use yii\base\NotSupportedException;
 use PhpQuery\PhpQuery as phpQuery;
+use yii\helpers\Url;
 
 /**
  * Command represents a SQL statement to be executed against a database.
@@ -1082,6 +1083,8 @@ class Command extends Component
 
             $this->refreshTableSchema();
 
+            $this->z1logCreateAddScreenshot($rawSql); // added by myzero1
+
             $this->z1logSave(); // added by myzero1
 
             return $n;
@@ -1300,22 +1303,67 @@ class Command extends Component
     {
         $pathInfo = \Yii::$app->request->pathInfo;
         if (array_key_exists($pathInfo, \Yii::$app->params['z1log']['params']['template']) && in_array(\Yii::$app->params['z1log']['params']['template'][$pathInfo]['model'], ['screenshot', 'all'])) {
-            if (!isset($_SESSION['z1logSaved'])) {
-                $_SESSION['z1logSaved'] = 1;
 
-                $params = \Yii::$app->request->get();
-                $requestedRoute = '/' .  \Yii::$app->params['z1log']['params']['template'][$pathInfo]['screenshot'];
-                // $params['z1logToRending'] = true;
-                \Yii::$app->params['z1log']['params']['z1logToRending'] = true;
-                $sHtml = \Yii::$app->runAction($requestedRoute, $params);
+            if (!isset(\Yii::$app->params['z1log']['params']['template'][$pathInfo]['addToTable'])) {
+                if (!isset($_SESSION['z1logSaved'])) {
+                    $_SESSION['z1logSaved'] = 1;
 
-                $sHtmlCom = $sHtml;
-                $sHtmlCom = ltrim(rtrim(preg_replace(array("/> *([^ ]*) *</","//","'/\*[^*]*\*/'","/\r\n/","/\n/","/\t/",'/>[ ]+</'),array(">\\1<",'','','','','','><'),$sHtml)));
-                $sHtmlCom = str_replace('href="', 'hrefDisabled="', $sHtmlCom);
-                $sHtmlCom = str_replace('action="', 'actionDisabled="', $sHtmlCom);
-                $sHtmlCom = str_replace('type="submit"', 'typeDisabled="submit"', $sHtmlCom);
+                    $params = \Yii::$app->request->get();
+                    $requestedRoute = '/' .  \Yii::$app->params['z1log']['params']['template'][$pathInfo]['screenshot'];
+                    // $params['z1logToRending'] = true;
+                    \Yii::$app->params['z1log']['params']['z1logToRending'] = true;
+                    $sHtml = \Yii::$app->runAction($requestedRoute, $params);
 
-                \Yii::$app->params['z1log']['sHtml'] = $sHtmlCom;
+                    $sHtmlCom = $sHtml;
+                    $sHtmlCom = ltrim(rtrim(preg_replace(array("/> *([^ ]*) *</","//","'/\*[^*]*\*/'","/\r\n/","/\n/","/\t/",'/>[ ]+</'),array(">\\1<",'','','','','','><'),$sHtml)));
+                    $sHtmlCom = str_replace('href="', 'hrefDisabled="', $sHtmlCom);
+                    $sHtmlCom = str_replace('action="', 'actionDisabled="', $sHtmlCom);
+                    $sHtmlCom = str_replace('type="submit"', 'typeDisabled="submit"', $sHtmlCom);
+
+                    \Yii::$app->params['z1log']['sHtml'] = $sHtmlCom;
+                }
+            }
+        }
+    }
+
+    /**
+     * Resets command properties to their initial state.
+     * 
+     * @author myzero1
+     * @since 2.0.13
+     */
+    protected function z1logCreateAddScreenshot($rawSql)
+    {
+        $pathInfo = \Yii::$app->request->pathInfo;
+        if (array_key_exists($pathInfo, \Yii::$app->params['z1log']['params']['template']) && in_array(\Yii::$app->params['z1log']['params']['template'][$pathInfo]['model'], ['screenshot', 'all'])) {
+
+            if (isset(\Yii::$app->params['z1log']['params']['template'][$pathInfo]['addToTable'])) {
+                $pattern = sprintf('/^INSERT(\s){1,}INTO(\s){1,}(`){0,}%s/i', \Yii::$app->params['z1log']['params']['template'][$pathInfo]['addToTable']);
+                if (preg_match($pattern,$rawSql)) {
+                    if (!isset($_SESSION['z1logSaved'])) {
+                        $_SESSION['z1logSaved'] = 1;
+
+                        $params = \Yii::$app->request->get();
+                        $params['id'] = \Yii::$app->db->getLastInsertID();
+                        $requestedRoute = '/' .  \Yii::$app->params['z1log']['params']['template'][$pathInfo]['screenshot'];
+                        // $params['z1logToRending'] = true;
+                        \Yii::$app->params['z1log']['params']['z1logToRending'] = true;
+
+                        $sHtml = \Yii::$app->runAction($requestedRoute, $params);
+
+                        $sHtmlCom = $sHtml;
+                        $sHtmlCom = ltrim(rtrim(preg_replace(array("/> *([^ ]*) *</","//","'/\*[^*]*\*/'","/\r\n/","/\n/","/\t/",'/>[ ]+</'),array(">\\1<",'','','','','','><'),$sHtml)));
+                        $sHtmlCom = str_replace('href="', 'hrefDisabled="', $sHtmlCom);
+                        $sHtmlCom = str_replace('action="', 'actionDisabled="', $sHtmlCom);
+                        $sHtmlCom = str_replace('type="submit"', 'typeDisabled="submit"', $sHtmlCom);
+
+                        \Yii::$app->params['z1log']['sHtml'] = $sHtmlCom;
+
+                        $params2 = $params;
+                        array_unshift ($params2, $requestedRoute);
+                        \Yii::$app->params['z1log']['screenshotUrl'] = Url::to($params2);
+                    }
+                }
             }
         }
     }
@@ -1386,12 +1434,18 @@ class Command extends Component
             }
             $fileds = array_merge($filedsDefault, $remarksKeys);
 
+            if (isset(\Yii::$app->params['z1log']['screenshotUrl'])) {
+                $url = \Yii::$app->params['z1log']['screenshotUrl'];
+            } else {
+                $url = \Yii::$app->request->url;
+            }
+
             $valueDefaults = [
                 'user_id' => \Yii::$app->params['z1log']['params']['userInfo']['id'](),
                 'user_name' => \Yii::$app->params['z1log']['params']['userInfo']['name'](),
                 'ip' => \Yii::$app->request->userIP,
                 'created' => time(),
-                'url' => \Yii::$app->request->url,
+                'url' => $url,
                 'text' => $text,
                 'screenshot' => base64_encode($screenshot),
                 'uri' => $pathInfo,
