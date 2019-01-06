@@ -78,6 +78,24 @@ return [
                     }
                 ],
                 'template' => [
+                    'user2/create' => [
+                        'model' => 'all', // text,screenshot,all
+                        'addToTable' => 'user', // for creating
+                        'text' => function(){
+                            return '添加用户'; 
+                        },
+                        'screenshot' => 'user2/update', // The template of screenshot
+                        'obj' => [
+                            'label' => '.field-user2-username .control-label',
+                            'value' => '#user2-username',
+                        ],
+                        'remarks' => [// the items must be Closure
+                            'remark' => function(){
+                                return sprintf('Create it at %s.', date('Y-m-d H:i:s'));
+                            },
+                            // 'r1' => function(){return 'r1'.time();},
+                        ],
+                    ],
                     'user2/update' => [
                         'model' => 'all', // text,screenshot,all
                         'text' => function(){
@@ -90,9 +108,24 @@ return [
                         ],
                         'remarks' => [// the items must be Closure
                             'remark' => function(){
-                                return sprintf('Modify it at %s.', date('Y-m-d H:i:s'));
+                                return sprintf('Update it at %s.', date('Y-m-d H:i:s'));
                             },
-                            // 'r1' => function(){return 'r1'.time();},
+                        ],
+                    ],
+                    'user2/delete' => [
+                        'model' => 'all', // text,screenshot,all
+                        'text' => function(){
+                            return '删除用户'; 
+                        },
+                        'screenshot' => 'user2/update', // The template of screenshot
+                        'obj' => [
+                            'label' => '.field-user2-username .control-label',
+                            'value' => '#user2-username',
+                        ],
+                        'remarks' => [// the items must be Closure
+                            'remark' => function(){
+                                return sprintf('Delete it at %s.', date('Y-m-d H:i:s'));
+                            },
                         ],
                     ],
                 ],
