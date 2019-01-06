@@ -23,7 +23,7 @@ php composer.phar require myzero1/yii2-log：1.*
 or add
 
 ```
-"myzero1/yii2-log": "~1"
+"myzero1/yii2-log": "*"
 ```
 
 to the require section of your `composer.json` file.
@@ -55,7 +55,7 @@ return [
                 ],
                 'remarksFieldsKey' => [
                     'remark', // default filed
-                    'r1', // custom field, can add it by yourself
+                    // 'r1', // custom field, can add it by yourself
                 ],
                 'userInfo' => [
                     'id' => function(){
@@ -89,8 +89,10 @@ return [
                             'value' => '#user2-username',
                         ],
                         'remarks' => [// the items must be Closure
-                            'remark' => function(){return 'default remark'.time();},
-                            'r1' => function(){return 'r1'.time();},
+                            'remark' => function(){
+                                return sprintf('Modify it at %s.', date('Y-m-d H:i:s'));
+                            },
+                            // 'r1' => function(){return 'r1'.time();},
                         ],
                     ],
                 ],
